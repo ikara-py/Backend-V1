@@ -11,3 +11,6 @@ $connection = mysqli_connect($_ENV["db_host"], $_ENV["db_username"], $_ENV["db_p
 if (!$connection) {
     die('Connect error: ' . mysqli_connect_error());
 }
+
+$allPatients = "select * from patients";
+
