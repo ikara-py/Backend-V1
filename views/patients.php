@@ -21,6 +21,16 @@ if (isset($_POST['addPatient'])) {
 }
 
 
+if (isset($_GET['id'], $connection)) {
+
+    $deleteQuery = $connection->prepare("delete from patients where patient_id = ?");
+    $deleteQuery->bind_param('i', $_GET['id']);
+    $deleteQuery->execute();
+    $deleteQuery->close();
+    header('Location: patients.php');
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -54,13 +64,13 @@ if (isset($_POST['addPatient'])) {
     </nav>
 
     <div class="flex justify-end">
-        <button id="showAddPatientForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center m-2">
+        <button id="showAddPatientForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center mt-5 mr-2">
             + Add Patient
         </button>
     </div>
 
     <div id="addPatientForm" class="hidden">
-        <div  class="justify-center flex ">
+        <div class="justify-center flex ">
             <form class="p-6 w-1/3 md:w-2/3 bg-gray-100 border border-gray-400 rounded-2xl" action="../views/patients.php" method="POST">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -92,7 +102,7 @@ if (isset($_POST['addPatient'])) {
                         <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
                     </div>
                 </div>
-    
+
                 <div class="flex justify-end space-x-4 mt-6">
                     <button type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
                         Cancel
@@ -107,7 +117,7 @@ if (isset($_POST['addPatient'])) {
     </div>
 
 
-    <div class="overflow-x-auto flex justify-center mt-12">
+    <div class="overflow-x-auto flex justify-center mt-5">
         <table class="display w-2/3 md:w-full md:mx-2">
             <thead>
                 <tr>
@@ -128,6 +138,10 @@ if (isset($_POST['addPatient'])) {
                         <td class="border text-center"><?= htmlspecialchars(strtoupper(substr($patient['gender'], 0, 1))) ?></td>
                         <td class="border text-center"><?= $patient['phone_number']; ?></td>
                         <td class="border text-center"><?= $patient['email']; ?></td>
+                        <td class="py-1">
+                            <a class="bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?id=<?= $patient['patient_id']; ?>">Delete</a>
+                            <a class="bg-green-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?id=<?= $patient['patient_id']; ?>">Edit</a>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
