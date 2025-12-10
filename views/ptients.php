@@ -2,6 +2,25 @@
 include "../config/connection.php";
 $getAllPatients = mysqli_query($connection, $allPatients);
 
+
+if (isset($_POST['addPatient'])) {
+    $firstName  = $_POST['firstName'];
+    $lastName   = $_POST['lastName'];
+    $gender     = $_POST['gender'];
+    $phoneNumber= $_POST['phoneNumber'];
+    $email      = $_POST['email'];
+    $birth      = $_POST['birth'];
+
+    $query = "INSERT INTO patients
+              (first_name,last_name,gender,date_of_birth,phone_number,email)
+              VALUES ('$firstName', '$lastName', '$gender',
+                      '$birth','$phoneNumber','$email')";
+    mysqli_query($connection, $query);
+    header('Location: ptients.php');
+    exit;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +80,7 @@ $getAllPatients = mysqli_query($connection, $allPatients);
     </div>
 
     <div class="justify-center flex bg-white ">
-        <form class="p-6 w-1/3 border border-gray-400 rounded-2xl" method="POST">
+        <form class="p-6 w-1/3 border border-gray-400 rounded-2xl" action="../views/ptients.php" method="POST">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
