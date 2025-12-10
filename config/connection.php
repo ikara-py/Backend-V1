@@ -13,4 +13,6 @@ if (!$connection) {
 }
 
 $allPatients = "select * from patients";
+$createPatient = "insert into patients(first_name,last_name,gender,date_of_birth,phone_number,email) values (?,?,?,?,?,?)";
+
 
