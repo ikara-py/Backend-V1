@@ -26,26 +26,27 @@ if (isset($_GET["id"])) {
     $query_run = mysqli_query($connection, $query);
     if (mysqli_num_rows($query_run) > 0) {
         foreach ($query_run as $raw) {
-            ?>
+?>
             <div id="addPatientForm">
                 <div class="justify-center flex ">
                     <form class="p-6 w-1/3 md:w-2/3 bg-gray-100 border border-gray-400 rounded-2xl" action="../views/patients.php" method="POST">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" name="patient_id" value="<?= $raw["patient_id"]; ?>" class="hidden">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-                                <input name="firstName" type="text" value="<?= $raw["first_name"] ?>" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
+                                <input name="firstName" type="text" value="<?= $raw["first_name"]; ?>" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-                                <input name="lastName" type="text" value="<?= $raw["last_name"] ?>" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
+                                <input name="lastName" type="text" value="<?= $raw["last_name"]; ?>" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
-                                <input name="birth" type="date" value="<?= $raw["date_of_birth"] ?>" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <input name="birth" type="date" value="<?= $raw["date_of_birth"]; ?>" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
-                                <select name="gender"  required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                                     <option value="" disabled>Select</option>
                                     <option value="male" value="male" <?= ($raw["gender"] === 'male') ? 'selected' : '' ?>>Male</option>
                                     <option value="female" value="male" <?= ($raw["gender"] === 'female') ? 'selected' : '' ?>>Female</option>
@@ -68,19 +69,28 @@ if (isset($_GET["id"])) {
                     </form>
                 </div>
             </div>
-            <?php
+<?php
         };
     } else {
         echo "no data found";
     };
 }
 
-// if (isset($_GET["id"], $connection)){
-//     $updateQuery = $connection->prepare("select * from patients where patient_id = ?");
-//     $updateQuery->bind_param('i', $_GET["id"]);
-//     $updateQuery->execute();
-//     $updateQuery->close();
-// }
+
+if (isset($_POST["updatePatient"])) {
+    $id         = $_POST["patient_id"];
+    $firstName  = $_POST['firstName'];
+    $lastName   = $_POST['lastName'];
+    $gender     = $_POST['gender'];
+    $phoneNumber = $_POST['phoneNumber'];
+    $email      = $_POST['email'];
+    $birth      = $_POST['birth'];
+
+    $query = "update patients set first_name='$firstName', last_name='$lastName', gender='$gender', phone_number='$phoneNumber', email='$email', date_of_birth='$birth' where patient_id ='$id'";
+    $query_run = mysqli_query($connection, $query);
+    header('Location: patients.php');
+    exit;
+}
 
 
 
