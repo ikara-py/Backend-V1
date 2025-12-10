@@ -7,7 +7,7 @@ if (isset($_POST['addPatient'])) {
     $firstName  = $_POST['firstName'];
     $lastName   = $_POST['lastName'];
     $gender     = $_POST['gender'];
-    $phoneNumber= $_POST['phoneNumber'];
+    $phoneNumber = $_POST['phoneNumber'];
     $email      = $_POST['email'];
     $birth      = $_POST['birth'];
 
@@ -16,10 +16,20 @@ if (isset($_POST['addPatient'])) {
               VALUES ('$firstName', '$lastName', '$gender',
                       '$birth','$phoneNumber','$email')";
     mysqli_query($connection, $query);
-    header('Location: ptients.php');
+    header('Location: patients.php');
     exit;
 }
 
+
+if (isset($_GET['id'], $connection)) {
+
+    $deleteQuery = $connection->prepare("delete from patients where patient_id = ?");
+    $deleteQuery->bind_param('i', $_GET['id']);
+    $deleteQuery->execute();
+    $deleteQuery->close();
+    header('Location: patients.php');
+    exit;
+}
 
 ?>
 
@@ -33,6 +43,7 @@ if (isset($_POST['addPatient'])) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/app.js" defer></script>
 </head>
 
 <body class="bg-gray-50">
@@ -52,8 +63,62 @@ if (isset($_POST['addPatient'])) {
         </div>
     </nav>
 
-    <div class="overflow-x-auto flex justify-center mt-12">
-        <table class="display w-2/3">
+    <div class="flex justify-end">
+        <button id="showAddPatientForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center mt-5 mr-2">
+            + Add Patient
+        </button>
+    </div>
+
+    <div id="addPatientForm" class="hidden">
+        <div class="justify-center flex ">
+            <form class="p-6 w-1/3 md:w-2/3 bg-gray-100 border border-gray-400 rounded-2xl" action="../views/patients.php" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                        <input name="firstName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                        <input name="lastName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
+                        <input name="birth" type="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+                        <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="" disabled>Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                        <input name="phoneNumber" type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="05/06/07XXXXXXXX">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                        <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="addPatient">
+                        <i class="fas fa-save mr-2"></i>
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="overflow-x-auto flex justify-center mt-5">
+        <table class="display w-2/3 md:w-full md:mx-2">
             <thead>
                 <tr>
                     <th class="border text-center">Full Name</th>
@@ -73,56 +138,16 @@ if (isset($_POST['addPatient'])) {
                         <td class="border text-center"><?= htmlspecialchars(strtoupper(substr($patient['gender'], 0, 1))) ?></td>
                         <td class="border text-center"><?= $patient['phone_number']; ?></td>
                         <td class="border text-center"><?= $patient['email']; ?></td>
+                        <td class="py-1">
+                            <a class="bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?id=<?= $patient['patient_id']; ?>">Delete</a>
+                            <a class="bg-green-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?id=<?= $patient['patient_id']; ?>">Edit</a>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
 
-    <div class="justify-center flex bg-white ">
-        <form class="p-6 w-1/3 border border-gray-400 rounded-2xl" action="../views/ptients.php" method="POST">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-                    <input name="firstName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-                    <input name="lastName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
-                    <input name="birth" type="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
-                    <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option value="" disabled>Select</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
-                    <input name="phoneNumber" type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="05/06/07XXXXXXXX">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                    <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-4 mt-6">
-                <button type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                    Cancel
-                </button>
-                <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="addPatient">
-                    <i class="fas fa-save mr-2"></i>
-                    Save
-                </button>
-            </div>
-        </form>
-    </div>
 
 
     <footer class="bg-gray-800 text-white py-8 mt-12">
