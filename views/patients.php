@@ -104,6 +104,15 @@ if (isset($_GET['id'], $connection)) {
     exit;
 }
 
+
+$search = isset($_GET['search_patient']) ? trim($_GET['search_patient']) : '';
+
+if (!empty($search)) {
+    $query = "select * from patients where first_name like '%$search%' or last_name like '%$search%'";
+    $getAllPatients = mysqli_query($connection, $query);
+} else {
+    $getAllPatients = mysqli_query($connection, $allPatients);
+}
 ?>
 
 <!DOCTYPE html>
@@ -135,6 +144,11 @@ if (isset($_GET['id'], $connection)) {
             </div>
         </div>
     </nav>
+
+    <form method="GET" action="../views/patients.php" class="mt-5 mr-2 flex justify-end">
+        <input type="text" name="search_patient" placeholder="Enter first or last name" value="<?= htmlspecialchars($_GET['search_patient'] ?? '') ?>" class="border border-gray-300 rounded-lg px-4 py-2">
+        <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Search</button>
+    </form>
 
     <div class="flex justify-end">
         <button id="showAddPatientForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center mt-5 mr-2">
