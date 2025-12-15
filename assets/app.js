@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const showAddPatientForm = document.getElementById("showAddPatientForm");
-    const addPatientForm = document.getElementById("addPatientForm");
-    
-    
-    showAddPatientForm.addEventListener("click", () =>{
-        console.log("showAddPatientForm test");
-        addPatientForm.classList.toggle("hidden");
-    })
+
+    const addPatientModal = document.getElementById('addPatientModal');
+    const showAddPatientBtn = document.getElementById('showAddPatientForm');
+    const cancelAddBtn = document.getElementById('cancel_add');
+
+    if (showAddPatientBtn) {
+        showAddPatientBtn.addEventListener('click', function() {
+            addPatientModal.classList.remove('hidden');
+        });
+    }
+
+    if (cancelAddBtn) {
+        cancelAddBtn.addEventListener('click', function() {
+            addPatientModal.classList.add('hidden');
+        });
+    }
 
 
 
@@ -26,5 +34,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    
-})
+
+});
