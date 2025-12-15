@@ -1,9 +1,8 @@
 <?php
 include "../config/connection.php";
-$getAllPatients = mysqli_query($connection, $allPatients);
 
-
-if (isset($_POST['addPatient'])) {
+function addPatient($connection)
+{
     $firstName  = $_POST['firstName'];
     $lastName   = $_POST['lastName'];
     $gender     = $_POST['gender'];
@@ -11,25 +10,49 @@ if (isset($_POST['addPatient'])) {
     $email      = $_POST['email'];
     $birth      = $_POST['birth'];
 
-    $query = "INSERT INTO patients
+    $query = "insert into patients
               (first_name,last_name,gender,date_of_birth,phone_number,email)
-              VALUES ('$firstName', '$lastName', '$gender',
+              values ('$firstName', '$lastName', '$gender',
                       '$birth','$phoneNumber','$email')";
     mysqli_query($connection, $query);
-    header('Location: patients.php');
+    header('location: patients.php');
     exit;
 }
 
-if (isset($_GET["id"])) {
+function delete_p($connection)
+{
+    if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
+        header('location:patients.php');
+        exit;
+    }
+
+    $id = $_GET["id"];
+    $deleteQuery = $connection->prepare("delete from patients where patient_id = ?");
+    $deleteQuery->bind_param('i', $id);
+    $deleteQuery->execute();
+    $deleteQuery->close();
+    header('location:patients.php');
+    exit;
+}
+
+function edit_p($connection)
+{
+    if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
+        echo "Invalid patient ID for editing.";
+        return;
+    }
+
     $id = $_GET["id"];
     $query = "select * from patients where patient_id = $id";
     $query_run = mysqli_query($connection, $query);
     if (mysqli_num_rows($query_run) > 0) {
         foreach ($query_run as $raw) {
 ?>
-            <div id="addPatientForm">
-                <div class="justify-center flex ">
-                    <form class="p-6 w-1/3 md:w-2/3 bg-gray-100 border border-gray-400 rounded-2xl" action="../views/patients.php" method="POST">
+            <script src="https://cdn.tailwindcss.com"></script>
+            <div id="editPatientModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
+                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl mx-4">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Edit Patient Record</h3>
+                    <form class="bg-white" action="../views/patients.php" method="POST">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input type="text" name="patient_id" value="<?= $raw["patient_id"]; ?>" class="hidden">
                             <div>
@@ -48,8 +71,8 @@ if (isset($_GET["id"])) {
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
                                 <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                                     <option value="" disabled>Select</option>
-                                    <option value="male" value="male" <?= ($raw["gender"] === 'male') ? 'selected' : '' ?>>Male</option>
-                                    <option value="female" value="male" <?= ($raw["gender"] === 'female') ? 'selected' : '' ?>>Female</option>
+                                    <option value="male" <?= ($raw["gender"] === 'male') ? 'selected' : '' ?>>Male</option>
+                                    <option value="female" <?= ($raw["gender"] === 'female') ? 'selected' : '' ?>>Female</option>
                                 </select>
                             </div>
                             <div>
@@ -62,10 +85,15 @@ if (isset($_GET["id"])) {
                             </div>
                         </div>
 
-                        <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="updatePatient">
-                            <i class="fas fa-save mr-2"></i>
-                            Save
-                        </button>
+                        <div class="flex justify-end space-x-4 mt-6">
+                            <a href="patients.php" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition text-center">
+                                Cancel
+                            </a>
+                            <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="updatePatient">
+                                <i class="fas fa-save mr-2" aria-hidden="true"></i>
+                                Save Changes
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -74,6 +102,22 @@ if (isset($_GET["id"])) {
     } else {
         echo "no data found";
     };
+}
+
+if (isset($_POST['addPatient'])) {
+    addPatient($connection);
+}
+
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+
+switch ($action) {
+    case "delete":
+        delete_p($connection);
+        break;
+    case "edit":
+        edit_p($connection);
+        break;
+    default:
 }
 
 
@@ -88,18 +132,6 @@ if (isset($_POST["updatePatient"])) {
 
     $query = "update patients set first_name='$firstName', last_name='$lastName', gender='$gender', phone_number='$phoneNumber', email='$email', date_of_birth='$birth' where patient_id ='$id'";
     $query_run = mysqli_query($connection, $query);
-    header('Location: patients.php');
-    exit;
-}
-
-
-
-if (isset($_GET['id'], $connection)) {
-
-    $deleteQuery = $connection->prepare("delete from patients where patient_id = ?");
-    $deleteQuery->bind_param('i', $_GET['id']);
-    $deleteQuery->execute();
-    $deleteQuery->close();
     header('Location: patients.php');
     exit;
 }
@@ -156,50 +188,53 @@ if (!empty($search)) {
         </button>
     </div>
 
-    <div id="addPatientForm" class="hidden">
-        <div class="justify-center flex ">
-            <form class="p-6 w-1/3 md:w-2/3 bg-gray-100 border border-gray-400 rounded-2xl" action="../views/patients.php" method="POST">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-                        <input name="firstName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
+    <div id="addPatientModal" class="hidden relative z-50">
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl mx-4">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Add New Patient</h3>
+                <form class="bg-white" action="../views/patients.php" method="POST">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                            <input name="firstName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                            <input name="lastName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
+                            <input name="birth" type="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+                            <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <option value="" disabled selected>Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                            <input name="phoneNumber" type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="05/06/07XXXXXXXX">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                            <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-                        <input name="lastName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
-                        <input name="birth" type="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
-                        <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="" disabled>Select</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
-                        <input name="phoneNumber" type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="05/06/07XXXXXXXX">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                        <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
-                    </div>
-                </div>
 
-                <div class="flex justify-end space-x-4 mt-6">
-                    <button type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                        Cancel
-                    </button>
-                    <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="addPatient">
-                        <i class="fas fa-save mr-2"></i>
-                        Save
-                    </button>
-                </div>
-            </form>
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button id="cancel_add" type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="addPatient">
+                            <i class="fas fa-save mr-2"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -226,8 +261,8 @@ if (!empty($search)) {
                         <td class="border text-center"><?= $patient['phone_number']; ?></td>
                         <td class="border text-center"><?= $patient['email']; ?></td>
                         <td class="py-1">
-                            <a class="bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?id=<?= $patient['patient_id']; ?>">Delete</a>
-                            <a class="bg-green-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?id=<?= $patient['patient_id']; ?>">Edit</a>
+                            <a class="bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?action=delete&id=<?= $patient['patient_id']; ?>">Delete</a>
+                            <a class="bg-green-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?action=edit&id=<?= $patient['patient_id']; ?>">Edit</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
