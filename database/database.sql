@@ -158,7 +158,8 @@ create table doctors (
     email varchar(100),
     department_id int(11),
     primary key (doctor_id),
-    foreign key (department_id) references departments (department_id)
+    foreign key (department_id) references departments (department_id) ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 insert into doctors (doctor_id, first_name, last_name, specialization, phone_number, email, department_id) values
@@ -187,7 +188,8 @@ create table staff (
     phone_number varchar(50),
     email varchar(100),
     department_id int(11),
-    foreign key (department_id) references departments (department_id),
+    foreign key (department_id) references departments (department_id) ON DELETE CASCADE
+    ON UPDATE CASCADE,
     primary key (staff_id)
 );
 
@@ -210,8 +212,10 @@ create table appointments (
     patient_id int(11),
     reason varchar(255),
     primary key (appointment_id),
-    foreign key (doctor_id) references doctors (doctor_id),
-    foreign key (patient_id) references patients (patient_id)
+    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 insert into appointments (appointment_date, appointment_time, doctor_id, patient_id, reason) values
@@ -231,8 +235,10 @@ create table admissions (
     room_id int(11),
     admission_date date,
     discharge_date date,
-    foreign key (patient_id) references patients (patient_id),
-    foreign key (room_id) references rooms (room_id),
+    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE
+    ON UPDATE CASCADE, 
+    foreign key (room_id) references rooms (room_id) ON DELETE CASCADE
+    ON UPDATE CASCADE,
     primary key (admission_id)
 );
 
@@ -251,9 +257,12 @@ create table prescriptions (
     prescription_date date,
     dosage_instructions varchar(50),
     primary key (prescription_id),
-    foreign key (patient_id) references patients (patient_id),
-    foreign key (medication_id) references medications (medication_id),
-    foreign key (doctor_id) references doctors (doctor_id)
+    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    foreign key (medication_id) references medications (medication_id) ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 insert into prescriptions (patient_id, doctor_id, medication_id, prescription_date, dosage_instructions) values
