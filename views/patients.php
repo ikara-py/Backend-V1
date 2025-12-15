@@ -143,7 +143,8 @@ if (!empty($search)) {
     $query = "select * from patients where first_name like '%$search%' or last_name like '%$search%'";
     $getAllPatients = mysqli_query($connection, $query);
 } else {
-    $getAllPatients = mysqli_query($connection, $allPatients);
+    $query = "select * from patients";
+    $getAllPatients = mysqli_query($connection, $query);
 }
 ?>
 
@@ -160,146 +161,188 @@ if (!empty($search)) {
     <script src="../assets/app.js" defer></script>
 </head>
 
-<body class="bg-gray-50">
-    <nav class="gradient-bg shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <i class="fas fa-hospital text-white text-3xl mr-3"></i>
-                    <span class="text-white text-2xl font-bold">Unity Care Clinic</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="#" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-xl font-medium">
-                        <i class="fas fa-chart-line mr-2"></i>Dashboard
-                    </a>
-                </div>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+
+    <aside class="bg-gray-800 text-white w-64 shrink-0 hidden md:block">
+        <div class="p-4 gradient-bg">
+            <div class="flex items-center">
+                <i class="fas fa-hospital text-2xl mr-3"></i>
+                <h1 class="text-xl font-bold">Unity Care</h1>
             </div>
         </div>
-    </nav>
 
-    <form method="GET" action="../views/patients.php" class="mt-5 mr-2 flex justify-end">
-        <input type="text" name="search_patient" placeholder="Enter first or last name" value="<?= htmlspecialchars($_GET['search_patient'] ?? '') ?>" class="border border-gray-300 rounded-lg px-4 py-2">
-        <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Search</button>
-    </form>
+        <nav class="mt-6">
+            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+                <span>Dashboard</span>
+            </a>
+            <a href="views\patients.php" class="flex items-center px-6 py-3 bg-gray-900 border-l-4 border-blue-500">
+                <span>Patients</span>
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+                <span>Doctors</span>
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+                <span>Departments</span>
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+                <span>appointments</span>
+            </a>
+        </nav>
+    </aside>
 
-    <div class="flex justify-end">
-        <button id="showAddPatientForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center mt-5 mr-2">
-            + Add Patient
-        </button>
-    </div>
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
 
-    <div id="addPatientModal" class="hidden relative z-50">
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center">
-            <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl mx-4">
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">Add New Patient</h3>
-                <form class="bg-white" action="../views/patients.php" method="POST">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <nav class="gradient-bg shadow-lg shrink-0">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <i class="fas fa-hospital text-white text-3xl mr-3 md:hidden"></i>
+                        <span class="text-white text-2xl font-bold md:hidden">Unity Care Clinic</span>
+                        <span class="text-white text-2xl font-bold hidden md:block">Patients Management</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-4">
+                        <a href="#" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-xl font-medium">
+                            <i class="fas fa-chart-line mr-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+
+            <form method="GET" action="../views/patients.php" class="mt-5 mr-2 flex justify-end">
+                <input type="text" name="search_patient" placeholder="Enter first or last name" value="<?= htmlspecialchars($_GET['search_patient'] ?? '') ?>" class="border border-gray-300 rounded-lg px-4 py-2">
+                <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Search</button>
+            </form>
+
+            <div class="flex justify-end">
+                <button id="showAddPatientForm" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center mt-5 mr-2">
+                    + Add Patient
+                </button>
+            </div>
+
+            <div id="addPatientModal" class="hidden relative z-50">
+                <div class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center">
+                    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl mx-4">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Add New Patient</h3>
+                        <form class="bg-white" action="../views/patients.php" method="POST">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                                    <input name="firstName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                                    <input name="lastName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
+                                    <input name="birth" type="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+                                    <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                                    <input name="phoneNumber" type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="05/06/07XXXXXXXX">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                                    <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end space-x-4 mt-6">
+                                <button id="cancel_add" type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="addPatient">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="overflow-x-auto flex justify-center mt-5">
+                <table class="display w-full md:mx-2 bg-white shadow-md rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-3 px-4 text-center font-semibold text-gray-600 border-b">Full Name</th>
+                            <th class="py-3 px-4 text-center font-semibold text-gray-600 border-b">Birth Date</th>
+                            <th class="py-3 px-4 text-center font-semibold text-gray-600 border-b">Gender</th>
+                            <th class="py-3 px-4 text-center font-semibold text-gray-600 border-b">Phone</th>
+                            <th class="py-3 px-4 text-center font-semibold text-gray-600 border-b">Email</th>
+                            <th class="py-3 px-4 text-center font-semibold text-gray-600 border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <?php
+                        if ($getAllPatients && mysqli_num_rows($getAllPatients) > 0):
+                            while ($patient = mysqli_fetch_assoc($getAllPatients)):
+                        ?>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-center"><?= $patient['first_name']; ?> <?= $patient['last_name']; ?></td>
+                                    <td class="py-3 px-4 text-center"><?= $patient['date_of_birth']; ?></td>
+                                    <td class="py-3 px-4 text-center"><?= htmlspecialchars(strtoupper(substr($patient['gender'], 0, 1))) ?></td>
+                                    <td class="py-3 px-4 text-center"><?= $patient['phone_number']; ?></td>
+                                    <td class="py-3 px-4 text-center"><?= $patient['email']; ?></td>
+                                    <td class="py-3 px-4 text-center space-x-2">
+                                        <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold transition" href="patients.php?action=delete&id=<?= $patient['patient_id']; ?>">Delete</a>
+                                        <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm font-semibold transition" href="patients.php?action=edit&id=<?= $patient['patient_id']; ?>">Edit</a>
+                                    </td>
+                                </tr>
+                            <?php endwhile;
+                        else: ?>
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-gray-500">No patients found.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="bg-gray-800 text-white py-8 mt-12 rounded-t-lg">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-                            <input name="firstName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="First Name">
+                            <h3 class="text-lg font-bold mb-4">Unity Care Clinic</h3>
+                            <p class="text-gray-400 text-sm">Modern and secure hospital management system.</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-                            <input name="lastName" type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Last Name">
+                            <h3 class="text-lg font-bold mb-4">Technologies</h3>
+                            <ul class="space-y-2 text-sm text-gray-400">
+                                <li>Procedural PHP 8.5</li>
+                                <li>MySQLi</li>
+                                <li>Tailwind CSS</li>
+                            </ul>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
-                            <input name="birth" type="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
-                            <select name="gender" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                <option value="" disabled selected>Select</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
-                            <input name="phoneNumber" type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="05/06/07XXXXXXXX">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                            <input name="email" type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="email@example.com">
+                            <h3 class="text-lg font-bold mb-4">Contact</h3>
+                            <p class="text-gray-400 text-sm">
+                                <i class="fas fa-envelope mr-2"></i>contact@hc.unity.com<br>
+                                <i class="fas fa-phone mr-2"></i>+212 666666666
+                            </p>
                         </div>
                     </div>
-
-                    <div class="flex justify-end space-x-4 mt-6">
-                        <button id="cancel_add" type="button" class="w-1/2 px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                            Cancel
-                        </button>
-                        <button type="submit" class="w-1/2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition" name="addPatient">
-                            <i class="fas fa-save mr-2"></i>
-                            Save
-                        </button>
+                    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                        <p>&copy; 2025 Unity Care Clinic. All rights reserved.</p>
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </footer>
+
+        </main>
     </div>
 
-
-    <div class="overflow-x-auto flex justify-center mt-5">
-        <table class="display w-2/3 md:w-full md:mx-2">
-            <thead>
-                <tr>
-                    <th class="border text-center">Full Name</th>
-                    <th class="border text-center">Birth Date</th>
-                    <th class="border text-center">Gender</th>
-                    <th class="border text-center">Phone</th>
-                    <th class="border text-center">Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while ($patient = mysqli_fetch_assoc($getAllPatients)):
-                ?>
-                    <tr>
-                        <td class="border text-center"><?= $patient['first_name']; ?> <?= $patient['last_name']; ?></td>
-                        <td class="border text-center"><?= $patient['date_of_birth']; ?></td>
-                        <td class="border text-center"><?= htmlspecialchars(strtoupper(substr($patient['gender'], 0, 1))) ?></td>
-                        <td class="border text-center"><?= $patient['phone_number']; ?></td>
-                        <td class="border text-center"><?= $patient['email']; ?></td>
-                        <td class="py-1">
-                            <a class="bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?action=delete&id=<?= $patient['patient_id']; ?>">Delete</a>
-                            <a class="bg-green-500 text-white px-2 py-1 rounded text-sm font-semibold " href="patients.php?action=edit&id=<?= $patient['patient_id']; ?>">Edit</a>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-
-
-
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Unity Care Clinic</h3>
-                    <p class="text-gray-400 text-sm">Modern and secure hospital management system.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Technologies</h3>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li>Procedural PHP 8.5</li>
-                        <li>MySQLi</li>
-                        <li>Tailwind CSS</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Contact</h3>
-                    <p class="text-gray-400 text-sm">
-                        <i class="fas fa-envelope mr-2"></i>contact@hc.unity.com<br>
-                        <i class="fas fa-phone mr-2"></i>+212 666666666
-                    </p>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-                <p>&copy; 2025 Unity Care Clinic. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 </body>
 
 </html>
