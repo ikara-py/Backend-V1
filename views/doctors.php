@@ -273,7 +273,7 @@ if(isset($_POST['addPatient'])){
                                     <td class="py-3 px-4 text-center"><?= $doctor['specialization']; ?></td>
                                     <td class="py-3 px-4 text-center"><?= $doctor['email']; ?></td>
                                     <td class="py-3 px-4 text-center space-x-2">
-                                        <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold transition" href="doctors.php?action=delete&id=<?= $doctor['doctor_id']; ?>">Delete</a>
+                                        <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold transition" href="doctors.php?action=delete&id=<?= $doctor['doctor_id']; ?>" onclick="return confirm('Are you sure you want to delete this department?');" >Delete</a>
                                         <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm font-semibold transition" href="doctors.php?action=edit&id=<?= $doctor['doctor_id']; ?>">Edit</a>
                                     </td>
                                 </tr>
