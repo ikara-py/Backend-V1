@@ -141,7 +141,7 @@ if(isset($_POST['addDepartment'])){
         </div>
 
         <nav class="mt-6">
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+            <a href="dashboard.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Dashboard</span>
             </a>
             <a href="patients.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">

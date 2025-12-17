@@ -21,7 +21,7 @@
         </div>
 
         <nav class="mt-6">
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+            <a href="views\dashboard.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Dashboard</span>
             </a>
             <a href="views\patients.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
@@ -37,7 +37,6 @@
     </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden">
-
         <nav class="gradient-bg shadow-lg shrink-0">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
