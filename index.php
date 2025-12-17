@@ -27,14 +27,11 @@
             <a href="views\patients.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Patients</span>
             </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+            <a href="views\doctors.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Doctors</span>
             </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+            <a href="views\departments.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Departments</span>
-            </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
-                <span>appointments</span>
             </a>
         </nav>
     </aside>
