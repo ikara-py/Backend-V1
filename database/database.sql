@@ -1,6 +1,5 @@
 -- create the database
 create database hospitalmanagment;
-
 -- use the database
 use hospitalmanagment;
 
@@ -158,26 +157,25 @@ create table doctors (
     email varchar(100),
     department_id int(11),
     primary key (doctor_id),
-    foreign key (department_id) references departments (department_id) ON DELETE CASCADE
-    ON UPDATE CASCADE
+    foreign key (department_id) references departments (department_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 insert into doctors (doctor_id, first_name, last_name, specialization, phone_number, email, department_id) values
-(1, 'aisha', 'khan', 'cardiology', '0622091891', 'aisha.khan@hospital.com', 1),
-(2, 'ben', 'carter', 'pediatrics', '0622091891', 'ben.carter@hospital.com', 2),
-(3, 'sarah', 'chen', 'neurology', '0622091891', 'sarah.chen@hospital.com', 3),
-(4, 'david', 'patel', 'orthopedics', '0622091891', 'david.patel@hospital.com', 4),
-(5, 'elena', 'vargas', 'dermatology', '0622091891', 'elena.vargas@hospital.com', 5),
-(6, 'emily', 'chen', 'cardiology', '0601234567', 'emily.chen@hospital.com', 1),
-(7, 'liam', 'brown', 'neurology', '0612345678', 'liam.brown@hospital.com', 3),
-(8, 'ava', 'davis', 'pediatrics', '0623456789', 'ava.davis@hospital.com', 2),
-(9, 'noah', 'taylor', 'cardiology', '0634567890', 'noah.taylor@hospital.com', 1),
-(10, 'sophia', 'martin', 'oncology', '0645678901', 'sophia.martin@hospital.com', 6),
-(11, 'ethan', 'hall', 'neurology', '0656789012', 'ethan.hall@hospital.com', 3),
-(12, 'mia', 'white', 'dermatology', '0667890123', 'mia.white@hospital.com', 5),
-(13, 'lucas', 'walker', 'cardiology', '0678901234', 'lucas.walker@hospital.com', 1),
-(14, 'isabella', 'allen', 'gynecology', '0689012345', 'isabella.allen@hospital.com', 7),
-(15, 'mason', 'scott', 'neurology', '0690123456', 'mason.scott@hospital.com', 3);
+(1, 'aisha', 'khan', 'cardiologist', '0622091891', 'aisha.khan@hospital.com', 1),
+(2, 'ben', 'carter', 'pediatrician', '0622091891', 'ben.carter@hospital.com', 2),
+(3, 'sarah', 'chen', 'neurologist', '0622091891', 'sarah.chen@hospital.com', 3),
+(4, 'david', 'patel', 'orthopedic surgeon', '0622091891', 'david.patel@hospital.com', 4),
+(5, 'elena', 'vargas', 'dermatologist', '0622091891', 'elena.vargas@hospital.com', 5),
+(6, 'emily', 'chen', 'cardiologist', '0601234567', 'emily.chen@hospital.com', 1),
+(7, 'liam', 'brown', 'neurologist', '0612345678', 'liam.brown@hospital.com', 3),
+(8, 'ava', 'davis', 'pediatrician', '0623456789', 'ava.davis@hospital.com', 2),
+(9, 'noah', 'taylor', 'cardiologist', '0634567890', 'noah.taylor@hospital.com', 1),
+(10, 'sophia', 'martin', 'oncologist', '0645678901', 'sophia.martin@hospital.com', 6),
+(11, 'ethan', 'hall', 'neurologist', '0656789012', 'ethan.hall@hospital.com', 3),
+(12, 'mia', 'white', 'dermatologist', '0667890123', 'mia.white@hospital.com', 5),
+(13, 'lucas', 'walker', 'cardiologist', '0678901234', 'lucas.walker@hospital.com', 1),
+(14, 'isabella', 'allen', 'gynecologist', '0689012345', 'isabella.allen@hospital.com', 7),
+(15, 'mason', 'scott', 'neurologist', '0690123456', 'mason.scott@hospital.com', 3);
 
 -- 6. STAFF
 create table staff (
@@ -188,8 +186,7 @@ create table staff (
     phone_number varchar(50),
     email varchar(100),
     department_id int(11),
-    foreign key (department_id) references departments (department_id) ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    foreign key (department_id) references departments (department_id) ON DELETE CASCADE ON UPDATE CASCADE,
     primary key (staff_id)
 );
 
@@ -212,10 +209,8 @@ create table appointments (
     patient_id int(11),
     reason varchar(255),
     primary key (appointment_id),
-    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE
-    ON UPDATE CASCADE
+    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 insert into appointments (appointment_date, appointment_time, doctor_id, patient_id, reason) values
@@ -235,10 +230,8 @@ create table admissions (
     room_id int(11),
     admission_date date,
     discharge_date date,
-    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE
-    ON UPDATE CASCADE, 
-    foreign key (room_id) references rooms (room_id) ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE ON UPDATE CASCADE, 
+    foreign key (room_id) references rooms (room_id) ON DELETE CASCADE ON UPDATE CASCADE,
     primary key (admission_id)
 );
 
@@ -257,12 +250,9 @@ create table prescriptions (
     prescription_date date,
     dosage_instructions varchar(50),
     primary key (prescription_id),
-    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    foreign key (medication_id) references medications (medication_id) ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE
-    ON UPDATE CASCADE
+    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    foreign key (medication_id) references medications (medication_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 insert into prescriptions (patient_id, doctor_id, medication_id, prescription_date, dosage_instructions) values
