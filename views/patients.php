@@ -171,7 +171,7 @@ if (!empty($search)) {
             <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Dashboard</span>
             </a>
-            <a href="views\patients.php" class="flex items-center px-6 py-3 bg-gray-900 border-l-4 border-blue-500">
+            <a href="patients.php" class="flex items-center px-6 py-3 bg-gray-900 border-l-4 border-blue-500">
                 <span>Patients</span>
             </a>
             <a href="doctors.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
