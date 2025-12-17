@@ -179,9 +179,6 @@ if(isset($_POST['addPatient'])){
             <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Departments</span>
             </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
-                <span>appointments</span>
-            </a>
         </nav>
     </aside>
 
