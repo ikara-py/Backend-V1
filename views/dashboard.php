@@ -15,10 +15,11 @@ $departmentCount = mysqli_fetch_assoc($dep)['c'];
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Overview</title>
+    <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/app.js" defer></script>
 </head>
 <body class="bg-gray-50 h-screen overflow-hidden">
 
