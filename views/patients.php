@@ -1,8 +1,7 @@
 <?php
 include "../config/connection.php";
 
-function addPatient($connection)
-{
+function addPatient($connection){
     $firstName  = $_POST['firstName'];
     $lastName   = $_POST['lastName'];
     $gender     = $_POST['gender'];
@@ -19,8 +18,7 @@ function addPatient($connection)
     exit;
 }
 
-function delete_p($connection)
-{
+function delete_p($connection){
     if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
         header('location:patients.php');
         exit;
@@ -35,8 +33,7 @@ function delete_p($connection)
     exit;
 }
 
-function edit_p($connection)
-{
+function edit_p($connection){
     if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
         echo "Invalid patient ID for editing.";
         return;
@@ -136,7 +133,6 @@ if (isset($_POST["updatePatient"])) {
     exit;
 }
 
-
 $search = isset($_GET['search_patient']) ? trim($_GET['search_patient']) : '';
 
 if (!empty($search)) {
@@ -178,14 +174,11 @@ if (!empty($search)) {
             <a href="views\patients.php" class="flex items-center px-6 py-3 bg-gray-900 border-l-4 border-blue-500">
                 <span>Patients</span>
             </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+            <a href="doctors.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Doctors</span>
             </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
+            <a href="departments.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Departments</span>
-            </a>
-            <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
-                <span>appointments</span>
             </a>
         </nav>
     </aside>
