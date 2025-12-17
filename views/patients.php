@@ -10,9 +10,9 @@ function addPatient($connection){
     $birth      = $_POST['birth'];
 
     $query = "insert into patients
-              (first_name,last_name,gender,date_of_birth,phone_number,email)
-              values ('$firstName', '$lastName', '$gender',
-                      '$birth','$phoneNumber','$email')";
+             (first_name,last_name,gender,date_of_birth,phone_number,email)
+             values ('$firstName', '$lastName', '$gender',
+                     '$birth','$phoneNumber','$email')";
     mysqli_query($connection, $query);
     header('location: patients.php');
     exit;
@@ -202,7 +202,7 @@ if (!empty($search)) {
             </div>
         </nav>
 
-        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
 
             <form method="GET" action="../views/patients.php" class="mt-5 mr-2 flex justify-end">
                 <input type="text" name="search_patient" placeholder="Enter first or last name" value="<?= htmlspecialchars($_GET['search_patient'] ?? '') ?>" class="border border-gray-300 rounded-lg px-4 py-2">
@@ -266,7 +266,7 @@ if (!empty($search)) {
             </div>
 
 
-            <div class="overflow-x-auto flex justify-center mt-5">
+            <div class="overflow-x-auto flex justify-center mt-5 px-6">
                 <table class="display w-full md:mx-2 bg-white shadow-md rounded-lg">
                     <thead class="bg-gray-100">
                         <tr>
@@ -304,7 +304,7 @@ if (!empty($search)) {
                 </table>
             </div>
 
-            <footer class="bg-gray-800 text-white py-8 mt-12 rounded-t-lg">
+            <footer class="bg-gray-800 text-white py-8 mt-12">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
