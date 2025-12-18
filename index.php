@@ -46,7 +46,7 @@
                         <span class="text-white text-2xl font-bold hidden md:block">Welcome</span>
                     </div>
                     <div class="hidden md:flex items-center space-x-4">
-                        <a href="#" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-xl font-medium">
+                        <a href="views\dashboard.php" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-xl font-medium">
                             <i class="fas fa-chart-line mr-2"></i>Dashboard
                         </a>
                     </div>
@@ -60,7 +60,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1 class="text-5xl font-bold mb-4">Hospital Management System</h1>
                     <p class="text-xl mb-8 text-gray-100">Comprehensive administration platform for Unity Care Clinic</p>
-                    <a href="#" class="bg-white text-black hover:text-gray-600 px-3 py-2 rounded-md text-xl font-medium">
+                    <a href="views\dashboard.php" class="bg-white text-black hover:text-gray-600 px-3 py-2 rounded-md text-xl font-medium">
                         <i class="fas fa-chart-line mr-2"></i>Dashboard
                     </a>
                 </div>
