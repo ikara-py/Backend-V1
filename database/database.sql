@@ -1,5 +1,6 @@
 -- create the database
 create database hospitalmanagment;
+
 -- use the database
 use hospitalmanagment;
 
