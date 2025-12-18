@@ -1,0 +1,147 @@
+Backend-V1/
+├─ assets/
+│  ├─ app.js
+│  ├─ chart.umd.js
+│  └─ style.css
+├─ config/
+│  └─ connection.php
+├─ database/
+│  └─ database.sql
+├─ src/
+│  ├─ input.css
+│  └─ output.css
+├─ vendor/
+│  ├─ composer/
+│  │  ├─ autoload_classmap.php
+│  │  ├─ autoload_files.php
+│  │  ├─ autoload_namespaces.php
+│  │  ├─ autoload_psr4.php
+│  │  ├─ autoload_real.php
+│  │  ├─ autoload_static.php
+│  │  ├─ ClassLoader.php
+│  │  ├─ installed.json
+│  │  ├─ installed.php
+│  │  ├─ InstalledVersions.php
+│  │  ├─ LICENSE
+│  │  └─ platform_check.php
+│  ├─ graham-campbell/
+│  │  └─ result-type/
+│  │     ├─ src/
+│  │     │  ├─ Error.php
+│  │     │  ├─ Result.php
+│  │     │  └─ Success.php
+│  │     ├─ composer.json
+│  │     └─ LICENSE
+│  ├─ phpoption/
+│  │  └─ phpoption/
+│  │     ├─ src/
+│  │     │  └─ PhpOption/
+│  │     │     ├─ LazyOption.php
+│  │     │     ├─ None.php
+│  │     │     ├─ Option.php
+│  │     │     └─ Some.php
+│  │     ├─ composer.json
+│  │     └─ LICENSE
+│  ├─ symfony/
+│  │  ├─ polyfill-ctype/
+│  │  │  ├─ bootstrap.php
+│  │  │  ├─ bootstrap80.php
+│  │  │  ├─ composer.json
+│  │  │  ├─ Ctype.php
+│  │  │  ├─ LICENSE
+│  │  │  └─ README.md
+│  │  ├─ polyfill-mbstring/
+│  │  │  ├─ Resources/
+│  │  │  │  └─ unidata/
+│  │  │  │     ├─ caseFolding.php
+│  │  │  │     ├─ lowerCase.php
+│  │  │  │     ├─ titleCaseRegexp.php
+│  │  │  │     └─ upperCase.php
+│  │  │  ├─ bootstrap.php
+│  │  │  ├─ bootstrap80.php
+│  │  │  ├─ composer.json
+│  │  │  ├─ LICENSE
+│  │  │  ├─ Mbstring.php
+│  │  │  └─ README.md
+│  │  └─ polyfill-php80/
+│  │     ├─ Resources/
+│  │     │  └─ stubs/
+│  │     │     ├─ Attribute.php
+│  │     │     ├─ PhpToken.php
+│  │     │     ├─ Stringable.php
+│  │     │     ├─ UnhandledMatchError.php
+│  │     │     └─ ValueError.php
+│  │     ├─ bootstrap.php
+│  │     ├─ composer.json
+│  │     ├─ LICENSE
+│  │     ├─ Php80.php
+│  │     ├─ PhpToken.php
+│  │     └─ README.md
+│  ├─ vlucas/
+│  │  └─ phpdotenv/
+│  │     ├─ src/
+│  │     │  ├─ Exception/
+│  │     │  │  ├─ ExceptionInterface.php
+│  │     │  │  ├─ InvalidEncodingException.php
+│  │     │  │  ├─ InvalidFileException.php
+│  │     │  │  ├─ InvalidPathException.php
+│  │     │  │  └─ ValidationException.php
+│  │     │  ├─ Loader/
+│  │     │  │  ├─ Loader.php
+│  │     │  │  ├─ LoaderInterface.php
+│  │     │  │  └─ Resolver.php
+│  │     │  ├─ Parser/
+│  │     │  │  ├─ Entry.php
+│  │     │  │  ├─ EntryParser.php
+│  │     │  │  ├─ Lexer.php
+│  │     │  │  ├─ Lines.php
+│  │     │  │  ├─ Parser.php
+│  │     │  │  ├─ ParserInterface.php
+│  │     │  │  └─ Value.php
+│  │     │  ├─ Repository/
+│  │     │  │  ├─ Adapter/
+│  │     │  │  │  ├─ AdapterInterface.php
+│  │     │  │  │  ├─ ApacheAdapter.php
+│  │     │  │  │  ├─ ArrayAdapter.php
+│  │     │  │  │  ├─ EnvConstAdapter.php
+│  │     │  │  │  ├─ GuardedWriter.php
+│  │     │  │  │  ├─ ImmutableWriter.php
+│  │     │  │  │  ├─ MultiReader.php
+│  │     │  │  │  ├─ MultiWriter.php
+│  │     │  │  │  ├─ PutenvAdapter.php
+│  │     │  │  │  ├─ ReaderInterface.php
+│  │     │  │  │  ├─ ReplacingWriter.php
+│  │     │  │  │  ├─ ServerConstAdapter.php
+│  │     │  │  │  └─ WriterInterface.php
+│  │     │  │  ├─ AdapterRepository.php
+│  │     │  │  ├─ RepositoryBuilder.php
+│  │     │  │  └─ RepositoryInterface.php
+│  │     │  ├─ Store/
+│  │     │  │  ├─ File/
+│  │     │  │  │  ├─ Paths.php
+│  │     │  │  │  └─ Reader.php
+│  │     │  │  ├─ FileStore.php
+│  │     │  │  ├─ StoreBuilder.php
+│  │     │  │  ├─ StoreInterface.php
+│  │     │  │  └─ StringStore.php
+│  │     │  ├─ Util/
+│  │     │  │  ├─ Regex.php
+│  │     │  │  └─ Str.php
+│  │     │  ├─ Dotenv.php
+│  │     │  └─ Validator.php
+│  │     ├─ composer.json
+│  │     └─ LICENSE
+│  └─ autoload.php
+├─ views/
+│  ├─ dashboard.php
+│  ├─ departments.php
+│  ├─ doctors.php
+│  └─ patients.php
+├─ .env
+├─ .gitignore
+├─ composer.json
+├─ composer.lock
+├─ index.php
+├─ package-lock.json
+├─ package.json
+└─ readme.md
