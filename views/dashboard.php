@@ -4,13 +4,15 @@ include "../config/connection.php";
 $doc = mysqli_query($connection, "select count(*) as c from doctors");
 $pat = mysqli_query($connection, "select count(*) as c from patients");
 $dep = mysqli_query($connection, "select count(*) as c from departments");
+$m_pat = mysqli_query($connection, "select count(*) as c from patients where gender = 'male'");
+$f_pat = mysqli_query($connection, "select count(*) as c from patients where gender = 'female'");
 
-$doctorCount   = mysqli_fetch_assoc($doc)['c'];
-$patientCount  = mysqli_fetch_assoc($pat)['c'];
+$m_count = mysqli_fetch_assoc($m_pat)['c'];
+$f_count = mysqli_fetch_assoc($f_pat)['c'];
+$doctorCount = mysqli_fetch_assoc($doc)['c'];
+$patientCount = mysqli_fetch_assoc($pat)['c'];
 $departmentCount = mysqli_fetch_assoc($dep)['c'];
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,8 +26,7 @@ $departmentCount = mysqli_fetch_assoc($dep)['c'];
     <script src="../assets/chart.umd.js"></script>
 </head>
 
-<body class="bg-gray-50 h-screen overflow-hidden">
-
+<body class="bg-gray-50">
     <aside class="bg-gray-800 text-white w-64 fixed h-full">
         <div class="p-4 gradient-bg">
             <i class="fas fa-hospital text-2xl mr-3"></i>
@@ -47,14 +48,14 @@ $departmentCount = mysqli_fetch_assoc($dep)['c'];
         </nav>
     </aside>
 
-    <div class="ml-64 flex flex-col h-screen">
+    <div class="ml-64 flex flex-col min-h-screen">
         <nav class="gradient-bg shadow-lg">
             <div class="max-w-7xl mx-auto px-4 h-16 flex items-center">
                 <span class="text-white text-2xl font-bold">Dashboard</span>
             </div>
         </nav>
 
-        <main class="flex-1 overflow-auto p-8">
+        <main class="flex-1 p-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-5xl mx-auto">
                 <div class="bg-white rounded-lg shadow p-6 text-center">
                     <i class="fas fa-user-md text-blue-500 text-3xl mb-2"></i>
@@ -73,54 +74,82 @@ $departmentCount = mysqli_fetch_assoc($dep)['c'];
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-lg shadow max-w-5xl mx-auto">
-                <canvas id="myChart" style="max-height: 400px;"></canvas>
+            <div class="flex gap-2 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow md:w-1/2">
+                    <canvas id="myChart" class="md:max-h-80"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow md:w-1/2">
+                    <canvas id="genderPieChart" class="md:max-h-80"></canvas>
+                </div>
             </div>
         </main>
-    </div> 
 
-    <div>
-        <canvas id="myChart"></canvas>
+        <footer class="bg-gray-800 text-white py-8 mt-12">
+            <div class="max-w-7xl mx-auto px-4 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 Unity Care Clinic. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
-    <script>
 
+    <script>
         const doctorCount = <?= $doctorCount ?>;
         const patientCount = <?= $patientCount ?>;
-        const departmentCount = <?= $departmentCount ?>
+        const departmentCount = <?= $departmentCount ?>;
 
-  const ctx = document.getElementById('myChart');
+        const ctx = document.getElementById('myChart');
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Doctor', 'Patients', 'Department'],
-      datasets: [{
-        label: 'Hospital Analytics',
-        data: [doctorCount, patientCount, departmentCount],
-        backgroundColor: [
-            'rgba(59, 130, 246, 0.2)',
-            'rgba(16, 185, 129, 0.2)',
-            'rgba(139, 92, 246, 0.2)'
-        ],
-        borderColor: [
-            'rgb(59, 130, 246)', 
-            'rgb(16, 185, 129)', 
-            'rgb(139, 92, 246)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Doctor', 'Patients', 'Department'],
+                datasets: [{
+                    label: 'Hospital Analytics',
+                    data: [doctorCount, patientCount, departmentCount],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.2)',
+                        'rgba(16, 185, 129, 0.2)',
+                        'rgba(139, 92, 246, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(59, 130, 246)',
+                        'rgb(16, 185, 129)',
+                        'rgb(139, 92, 246)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
+        const ctx_c = document.getElementById('genderPieChart').getContext('2d');
+
+        new Chart(ctx_c, {
+            type: 'pie',
+            data: {
+                labels: ['Male', 'Female'],
+                datasets: [{
+                    data: [<?= $m_count ?>, <?= $f_count ?>],
+                    backgroundColor: ['#36A2EB', '#FF6384'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
