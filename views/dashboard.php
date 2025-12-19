@@ -1,6 +1,11 @@
 <?php
 include "../config/connection.php";
 
+if(!isset($_SESSION['admin_id'])){
+    header('location:login.php');
+    exit;
+}
+
 $doc = mysqli_query($connection, "select count(*) as c from doctors");
 $pat = mysqli_query($connection, "select count(*) as c from patients");
 $dep = mysqli_query($connection, "select count(*) as c from departments");

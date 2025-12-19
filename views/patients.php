@@ -1,6 +1,11 @@
 <?php
 include "../config/connection.php";
 
+if(!isset($_SESSION['admin_id'])){
+    header('location:login.php');
+    exit;
+}
+
 function addPatient($connection){
     $firstName  = $_POST['firstName'];
     $lastName   = $_POST['lastName'];

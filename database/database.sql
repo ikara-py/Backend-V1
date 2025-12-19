@@ -128,3 +128,13 @@ INSERT INTO doctors (first_name, last_name, specialization, phone_number, email,
 ('lucas', 'walker', 'cardiologist', '0678901234', 'lucas.walker@hospital.com', 1),
 ('isabella', 'allen', 'gynecologist', '0689012345', 'isabella.allen@hospital.com', 7),
 ('mason', 'scott', 'neurologist', '0690123456', 'mason.scott@hospital.com', 3);
+
+select * from admins;
+
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+INSERT INTO admins (username, password) VALUES ("admin","admin123");

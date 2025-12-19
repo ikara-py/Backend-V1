@@ -1,6 +1,11 @@
 <?php
 include "../config/connection.php";
 
+if(!isset($_SESSION['admin_id'])){
+    header('location:login.php');
+    exit;
+}
+
 function addDepartment($connection){
     $departmentName = $_POST['departmentName'];
     $location       = $_POST['location'];
