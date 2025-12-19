@@ -1,19 +1,13 @@
--- create the database
-create database hospitalmanagment;
+CREATE DATABASE hospitalmanagment;
+USE hospitalmanagment;
 
--- use the database
-use hospitalmanagment;
-
-
--- 1. DEPARTMENTS
-create table departments (
-    department_id int(11) auto_increment,
-    department_name varchar(50),
-    location varchar(100),
-    primary key (department_id)
+CREATE TABLE departments (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(50),
+    location VARCHAR(100)
 );
 
-insert into departments (department_name, location) values
+INSERT INTO departments (department_name, location) VALUES
 ('cardiology', 'building a, floor 2'),
 ('pediatrics', 'building b, floor 1'),
 ('neurology', 'building a, floor 3'),
@@ -22,32 +16,15 @@ insert into departments (department_name, location) values
 ('oncology', 'building c, floor 1'),
 ('gynecology', 'building a, floor 1');
 
--- 2. MEDICATIONS
-create table medications (
-    medication_id int(11) auto_increment,
-    medication_name varchar(100),
-    dosage varchar(50),
-    primary key (medication_id)
-);
-
-insert into medications (medication_name, dosage) values
-('paracetamol', '500mg'),
-('amoxicillin', '250mg'),
-('metformin', '850mg'),
-('lisinopril', '10mg'),
-('atorvastatin', '20mg');
-
--- 3. PATIENTS
-create table patients (
-    patient_id int(11) auto_increment,
-    first_name varchar(50),
-    last_name varchar(50),
-    gender enum ('male', 'female', 'other'),
-    date_of_birth date,
-    phone_number varchar(100),
-    email varchar(100),
-    address varchar(255),
-    primary key (patient_id)
+CREATE TABLE patients (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    gender ENUM('male', 'female', 'other'),
+    date_of_birth DATE,
+    phone_number VARCHAR(100),
+    email VARCHAR(100),
+    address VARCHAR(255)
 );
 
 insert into patients (patient_id, first_name, last_name, gender, date_of_birth, phone_number, email, address) values
@@ -122,144 +99,32 @@ insert into patients (patient_id, first_name, last_name, gender, date_of_birth, 
 (69, 'latifa', 'el yahyaoui', 'female', '1986-09-16', '0690012345', 'latifa.yahyaoui@yahoo.fr', 'boulevard moulay youssef, fès'),
 (70, 'samir', 'el ouali', 'male', '1995-12-02', '0601123456', 'samir.ouali@gmail.com', 'avenue ibn rochd, tanger');
 
--- 4. ROOMS
-create table rooms (
-    room_id int(11) auto_increment,
-    room_number varchar(10),
-    room_type enum ('general', 'private', 'icu'),
-    availability tinyint(1),
-    primary key (room_id)
+CREATE TABLE doctors (
+    doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    specialization VARCHAR(50),
+    phone_number VARCHAR(15),
+    email VARCHAR(100),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
-insert into rooms (room_number, room_type, availability) values
-('101a', 'private', 1),
-('101b', 'private', 0),
-('102', 'general', 1),
-('103', 'general', 1),
-('104', 'general', 0),
-('201', 'private', 1),
-('202', 'private', 1),
-('301', 'icu', 0),
-('302', 'icu', 1),
-('303', 'icu', 0),
-('401a', 'general', 1),
-('401b', 'general', 0),
-('402', 'private', 1),
-('403', 'general', 1),
-('501', 'icu', 0);
-
--- 5. DOCTORS
-create table doctors (
-    doctor_id int(11) auto_increment,
-    first_name varchar(50),
-    last_name varchar(50),
-    specialization varchar(50),
-    phone_number varchar(15),
-    email varchar(100),
-    department_id int(11),
-    primary key (doctor_id),
-    foreign key (department_id) references departments (department_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-insert into doctors (doctor_id, first_name, last_name, specialization, phone_number, email, department_id) values
-(1, 'aisha', 'khan', 'cardiologist', '0622091891', 'aisha.khan@hospital.com', 1),
-(2, 'ben', 'carter', 'pediatrician', '0622091891', 'ben.carter@hospital.com', 2),
-(3, 'sarah', 'chen', 'neurologist', '0622091891', 'sarah.chen@hospital.com', 3),
-(4, 'david', 'patel', 'orthopedic surgeon', '0622091891', 'david.patel@hospital.com', 4),
-(5, 'elena', 'vargas', 'dermatologist', '0622091891', 'elena.vargas@hospital.com', 5),
-(6, 'emily', 'chen', 'cardiologist', '0601234567', 'emily.chen@hospital.com', 1),
-(7, 'liam', 'brown', 'neurologist', '0612345678', 'liam.brown@hospital.com', 3),
-(8, 'ava', 'davis', 'pediatrician', '0623456789', 'ava.davis@hospital.com', 2),
-(9, 'noah', 'taylor', 'cardiologist', '0634567890', 'noah.taylor@hospital.com', 1),
-(10, 'sophia', 'martin', 'oncologist', '0645678901', 'sophia.martin@hospital.com', 6),
-(11, 'ethan', 'hall', 'neurologist', '0656789012', 'ethan.hall@hospital.com', 3),
-(12, 'mia', 'white', 'dermatologist', '0667890123', 'mia.white@hospital.com', 5),
-(13, 'lucas', 'walker', 'cardiologist', '0678901234', 'lucas.walker@hospital.com', 1),
-(14, 'isabella', 'allen', 'gynecologist', '0689012345', 'isabella.allen@hospital.com', 7),
-(15, 'mason', 'scott', 'neurologist', '0690123456', 'mason.scott@hospital.com', 3);
-
--- 6. STAFF
-create table staff (
-    staff_id int(11) auto_increment,
-    first_name varchar(50),
-    last_name varchar(50),
-    job_title varchar(50),
-    phone_number varchar(50),
-    email varchar(100),
-    department_id int(11),
-    foreign key (department_id) references departments (department_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    primary key (staff_id)
-);
-
-insert into staff (staff_id, first_name, last_name, job_title, phone_number, email, department_id) values
-(101, 'fatima', 'zahra', 'head nurse', '0699001122', 'fatima.zahra@hospital.com', 1),
-(102, 'khalid', 'amine', 'nurse', '0688776655', 'khalid.amine@hospital.com', 2),
-(103, 'nadia', 'karim', 'nurse', '0677665544', 'nadia.karim@hospital.com', 3),
-(104, 'rachid', 'hassan', 'physical therapist', '0655443322', 'rachid.hassan@hospital.com', 4),
-(105, 'samira', 'mansour', 'lab technician', '0644332211', 'samira.mansour@hospital.com', 6),
-(106, 'youssef', 'idrissi', 'administrator', '0633221100', 'youssef.idrissi@hospital.com', 7),
-(107, 'leila', 'benali', 'nurse assistant', '0622110099', 'leila.benali@hospital.com', 1),
-(108, 'tarik', 'alaoui', 'receptionist', '0611009988', 'tarik.alaoui@hospital.com', 5);
-
--- 7. APPOINTMENTS 
-create table appointments (
-    appointment_id int(11) auto_increment,
-    appointment_date date,
-    appointment_time time,
-    doctor_id int(11),
-    patient_id int(11),
-    reason varchar(255),
-    primary key (appointment_id),
-    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-insert into appointments (appointment_date, appointment_time, doctor_id, patient_id, reason) values
-('2025-12-05', '09:00:00', 4, 1, 'persistent knee pain after running'),
-('2025-12-05', '10:30:00', 1, 9, 'follow-up on blood pressure'),
-('2025-12-06', '14:00:00', 5, 2, 'rash appearing on arms'),
-('2025-12-06', '16:45:00', 3, 5, 'migraine consultation'),
-('2025-12-07', '08:15:00', 14, 3, 'annual gynecological exam'),
-('2025-12-07', '11:00:00', 10, 8, 'discussion of biopsy results'),
-('2025-12-08', '13:30:00', 1, 6, 'heart rate irregularity'),
-('2025-12-09', '09:45:00', 12, 7, 'acne treatment review');
-
--- 8. ADMISSIONS
-create table admissions (
-    admission_id int(11) auto_increment,
-    patient_id int(11),
-    room_id int(11),
-    admission_date date,
-    discharge_date date,
-    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE ON UPDATE CASCADE, 
-    foreign key (room_id) references rooms (room_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    primary key (admission_id)
-);
-
-insert into admissions (patient_id, room_id, admission_date, discharge_date) values
-(5, 8, '2025-11-28', '2025-12-05'),
-(2, 4, '2025-12-01', null),
-(9, 1, '2025-11-15', '2025-11-20'),  
-(4, 15, '2025-12-04', null);  
-
--- 9. PRESCRIPTIONS
-create table prescriptions (
-    prescription_id int(11) auto_increment,
-    patient_id int(11),
-    doctor_id int(11),
-    medication_id int(11),
-    prescription_date date,
-    dosage_instructions varchar(50),
-    primary key (prescription_id),
-    foreign key (patient_id) references patients (patient_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    foreign key (medication_id) references medications (medication_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    foreign key (doctor_id) references doctors (doctor_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-insert into prescriptions (patient_id, doctor_id, medication_id, prescription_date, dosage_instructions) values
-(9, 1, 4, '2025-12-05', '1 tablet daily for BP'),  
-(2, 5, 2, '2025-12-05', '250mg twice a day for infection'),
-(4, 4, 1, '2025-12-06', '500mg as needed for pain'),  
-(1, 3, 5, '2025-12-06', 'take with dinner'),
-(8, 2, 2, '2025-12-07', 'complete the full course'),
-(3, 14, 3, '2025-12-07', '850mg with meals');
+INSERT INTO doctors (first_name, last_name, specialization, phone_number, email, department_id) VALUES
+('aisha', 'khan', 'cardiologist', '0622091891', 'aisha.khan@hospital.com', 1),
+('ben', 'carter', 'pediatrician', '0622091891', 'ben.carter@hospital.com', 2),
+('sarah', 'chen', 'neurologist', '0622091891', 'sarah.chen@hospital.com', 3),
+('david', 'patel', 'orthopedic surgeon', '0622091891', 'david.patel@hospital.com', 4),
+('elena', 'vargas', 'dermatologist', '0622091891', 'elena.vargas@hospital.com', 5),
+('emily', 'chen', 'cardiologist', '0601234567', 'emily.chen@hospital.com', 1),
+('liam', 'brown', 'neurologist', '0612345678', 'liam.brown@hospital.com', 3),
+('ava', 'davis', 'pediatrician', '0623456789', 'ava.davis@hospital.com', 2),
+('noah', 'taylor', 'cardiologist', '0634567890', 'noah.taylor@hospital.com', 1),
+('sophia', 'martin', 'oncologist', '0645678901', 'sophia.martin@hospital.com', 6),
+('ethan', 'hall', 'neurologist', '0656789012', 'ethan.hall@hospital.com', 3),
+('mia', 'white', 'dermatologist', '0667890123', 'mia.white@hospital.com', 5),
+('lucas', 'walker', 'cardiologist', '0678901234', 'lucas.walker@hospital.com', 1),
+('isabella', 'allen', 'gynecologist', '0689012345', 'isabella.allen@hospital.com', 7),
+('mason', 'scott', 'neurologist', '0690123456', 'mason.scott@hospital.com', 3);
