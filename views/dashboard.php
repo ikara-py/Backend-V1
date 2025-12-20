@@ -50,6 +50,10 @@ $departmentCount = mysqli_fetch_assoc($dep)['c'];
             <a href="departments.php" class="flex items-center px-6 py-3 hover:bg-gray-700">
                 <span>Departments</span>
             </a>
+            <a href="logout.php" class="flex items-center px-6 py-3 text-red-500 hover:bg-red-700 hover:text-white transition font-bold">
+                <i class="fas fa-door-open mr-3"></i>
+                <span>Logout</span>
+            </a>
         </nav>
     </aside>
 

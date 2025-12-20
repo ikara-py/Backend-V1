@@ -1,9 +1,3 @@
-<?php
-if (!isset($_SESSION['admin_id'])) {
-    header('location:views\login.php');
-    exit;
-}
- ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,7 +32,7 @@ if (!isset($_SESSION['admin_id'])) {
             </a>
             <a href="views\departments.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Departments</span>
-            </a>
+            </a>      
         </nav>
     </aside>
 
@@ -76,7 +70,7 @@ if (!isset($_SESSION['admin_id'])) {
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Key Features</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div class="text-center p-6">
                             <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
@@ -86,19 +80,11 @@ if (!isset($_SESSION['admin_id'])) {
                         </div>
 
                         <div class="text-center p-6">
-                            <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-globe text-green-600 text-2xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Multilingual</h3>
-                            <p class="text-gray-600 text-sm">FR, EN support with built-in i18n</p>
-                        </div>
-
-                        <div class="text-center p-6">
                             <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-shield-alt text-purple-600 text-2xl"></i>
                             </div>
                             <h3 class="font-bold text-gray-800 mb-2">Secure</h3>
-                            <p class="text-gray-600 text-sm">Protection against XSS and SQL injections</p>
+                            <p class="text-gray-600 text-sm">Protection against SQL injections</p>
                         </div>
 
                         <div class="text-center p-6">

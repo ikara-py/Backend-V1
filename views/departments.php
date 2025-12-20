@@ -158,6 +158,10 @@ if(isset($_POST['addDepartment'])){
             <a href="departments.php" class="flex items-center px-6 py-3 bg-gray-900 border-l-4 border-blue-500">
                 <span>Departments</span>
             </a>
+            <a href="logout.php" class="flex items-center px-6 py-3 text-red-500 hover:bg-red-700 hover:text-white transition font-bold">
+                <i class="fas fa-door-open mr-3"></i>
+                <span>Logout</span>
+            </a>
         </nav>
     </aside>
 

@@ -1,12 +1,13 @@
 <?php
 include "../config/connection.php";
 
-if(!isset($_SESSION['admin_id'])){
+if (!isset($_SESSION['admin_id'])) {
     header('location:login.php');
     exit;
 }
 
-function addPatient($connection){
+function addPatient($connection)
+{
     $firstName  = $_POST['firstName'];
     $lastName   = $_POST['lastName'];
     $gender     = $_POST['gender'];
@@ -23,7 +24,8 @@ function addPatient($connection){
     exit;
 }
 
-function delete_p($connection){
+function delete_p($connection)
+{
     if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
         header('location:patients.php');
         exit;
@@ -38,7 +40,8 @@ function delete_p($connection){
     exit;
 }
 
-function edit_p($connection){
+function edit_p($connection)
+{
     if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
         echo "Invalid patient ID for editing.";
         return;
@@ -184,6 +187,10 @@ if (!empty($search)) {
             </a>
             <a href="departments.php" class="flex items-center px-6 py-3 hover:bg-gray-700 transition">
                 <span>Departments</span>
+            </a>
+            <a href="logout.php" class="flex items-center px-6 py-3 text-red-500 hover:bg-red-700 hover:text-white transition font-bold">
+                <i class="fas fa-door-open mr-3"></i>
+                <span>Logout</span>
             </a>
         </nav>
     </aside>
